@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from chapter03.List import listOf
+from chapter03.List import list_of
 from chapter04.option import Some, Nonentity, map2, sequence, traverse
 
 
@@ -32,8 +32,8 @@ class TestOption(TestCase):
         self.assertEqual(Nonentity(), map2(Some(1), Nonentity(), (lambda a, b: a + b)))
 
     def test_sequence(self) -> None:
-        self.assertEqual(Some(listOf(1, 2, 3)), sequence(listOf(Some(1), Some(2), Some(3))))
+        self.assertEqual(Some(list_of(1, 2, 3)), sequence(list_of(Some(1), Some(2), Some(3))))
 
     def test_traverse(self) -> None:
-        xs = traverse(listOf(1, 2, 3, 4), lambda it: Some(it / 2.0))
-        self.assertEqual(Some(listOf(0.5, 1.0, 1.5, 2.0)), xs)
+        xs = traverse(list_of(1, 2, 3, 4), lambda it: Some(it / 2.0))
+        self.assertEqual(Some(list_of(0.5, 1.0, 1.5, 2.0)), xs)

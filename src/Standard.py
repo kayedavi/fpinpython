@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TypeVar, Callable, Optional, Any, Iterator, Iterable, Sequence, ParamSpec
+from typing import TypeVar, Callable, Optional, Iterator, Iterable, Sequence, ParamSpec
 
 T = ParamSpec('T')
 R = TypeVar('R')
@@ -172,7 +172,3 @@ def take_unless(a: T, predicate: Callable[[T], bool]) -> Optional[T]:
         return None
     else:
         return a
-
-
-def TODO() -> Any:
-    raise NotImplementedError()

@@ -59,4 +59,4 @@ def sequence(a: List[Option[A]]) -> Option[List[A]]:
 
 
 def traverse(a: List[A], f: Callable[[A], Option[B]]) -> Option[List[B]]:
-    return a.foldRight(Some(Nil()), (lambda h, t: map2(f(h), t, Cons)))  # type: ignore
+    return a.fold_right(Some(Nil()), (lambda h, t: map2(f(h), t, Cons)))  # type: ignore

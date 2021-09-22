@@ -14,9 +14,9 @@ Nothing = TypeVar('Nothing')
 class List(Generic[A]):
 
     def append(self, r: List[A]) -> List[A]:
-        return self.foldRight(r, (lambda h, t: Cons(h, t)))
+        return self.fold_right(r, (lambda h, t: Cons(h, t)))
 
-    def foldRight(self, z: B, f: Callable[[A, B], B]) -> B:
+    def fold_right(self, z: B, f: Callable[[A, B], B]) -> B:
         return self.fold(lambda b: b, (lambda g, a: lambda b: g(f(a, b))))(z)
 
     def tail(self) -> List[A]:
@@ -33,7 +33,7 @@ class List(Generic[A]):
             case Cons(x, _):
                 return x
 
-    def setHead(self, h: A) -> List[A]:
+    def set_head(self, h: A) -> List[A]:
         match self:
             case Nil():
                 raise Exception("set_head on empty list")
@@ -53,10 +53,10 @@ class List(Generic[A]):
 
         return go(self, n).eval()
 
-    def dropWhile(self, f: Callable[[A], bool]) -> List[A]:
+    def drop_while(self, f: Callable[[A], bool]) -> List[A]:
         match self:
             case Cons(h, t) if f(h):
-                return t.dropWhile(f)
+                return t.drop_while(f)
             case _:
                 return self
 
@@ -83,14 +83,14 @@ class List(Generic[A]):
         return go(self, z, f).eval()
 
     def reverse(self) -> List[A]:
-        return self.fold(emptyList(), (lambda acc, h: Cons(h, acc)))
+        return self.fold(empty_list(), (lambda acc, h: Cons(h, acc)))
 
     @staticmethod
     def concat(xs: List[List[A]]) -> List[A]:
-        return xs.foldRight(emptyList(), List.append)
+        return xs.fold_right(empty_list(), List.append)
 
     def map(self, f: Callable[[A], B]) -> List[B]:
-        return self.foldRight(emptyList(), (lambda h, t: Cons(f(h), t)))
+        return self.fold_right(empty_list(), (lambda h, t: Cons(f(h), t)))
 
     def filter(self, f: Callable[[A], bool]) -> List[A]:
         def go(h: A, t: List[A]) -> List[A]:
@@ -99,21 +99,21 @@ class List(Generic[A]):
             else:
                 return t
 
-        return self.foldRight(emptyList(), go)
+        return self.fold_right(empty_list(), go)
 
-    def flatMap(self, f: Callable[[A], List[B]]) -> List[B]:
+    def flat_map(self, f: Callable[[A], List[B]]) -> List[B]:
         return List.concat(self.map(f))
 
-    def zipWith(self, b: List[B], f: Callable[[A, B], C]) -> List[C]:
+    def zip_with(self, b: List[B], f: Callable[[A, B], C]) -> List[C]:
         match (self, b):
             case (Nil(), _):
                 return Nil()
             case (_, Nil()):
                 return Nil()
             case (Cons(h1, t1), Cons(h2, t2)):
-                return Cons(f(h1, h2), t1.zipWith(t2, f))
+                return Cons(f(h1, h2), t1.zip_with(t2, f))
 
-    def startsWith(self, prefix: List[A]) -> bool:
+    def starts_with(self, prefix: List[A]) -> bool:
         def go(xs: List[A], pre: List[A]) -> TailCall[bool]:
             match (xs, pre):
                 case (_, Nil()):
@@ -125,24 +125,24 @@ class List(Generic[A]):
 
         return go(self, prefix).eval()
 
-    def hasSubsequence(self, subsequence: List[A]) -> bool:
+    def has_subsequence(self, subsequence: List[A]) -> bool:
         def go(sup: List[A], sub: List[A]) -> TailCall[bool]:
             match sup:
                 case Nil():
                     return Return(sub == Nil)
-                case _ if sup.startsWith(sub):
+                case _ if sup.starts_with(sub):
                     return Return(True)
                 case Cons(_, t):
                     return Suspend(lambda: go(t, sub))
 
         return go(self, subsequence).eval()
 
-    def groupBy(self, keySelector: Callable[[A], B]) -> dict[B, List[A]]:
-        xs: list[A] = self.toPython()
+    def group_by(self, key_selector: Callable[[A], B]) -> dict[B, List[A]]:
+        xs: list[A] = self.to_python()
         xs.reverse()
         dictionary: dict[A, List[A]] = {}
         for x in xs:
-            key = keySelector(x)
+            key = key_selector(x)
             list_in_dict = dictionary.get(key)
             if list_in_dict:
                 dictionary[key] = Cons(x, list_in_dict)
@@ -160,7 +160,7 @@ class List(Generic[A]):
 
             return first + remaining + ']'
 
-    def toPython(self) -> list[A]:
+    def to_python(self) -> list[A]:
         def go(b: list[A], a: A) -> list[A]:
             b.append(a)
             return b
@@ -168,14 +168,14 @@ class List(Generic[A]):
         return self.fold(list(), go)
 
 
-def listOf(*elements: A) -> List[A]:
+def list_of(*elements: A) -> List[A]:
     if len(elements) == 0:
         return Nil()
     else:
-        return Cons(elements[0], listOf(*elements[1:]))
+        return Cons(elements[0], list_of(*elements[1:]))
 
 
-def emptyList() -> List[Nothing]:
+def empty_list() -> List[Nothing]:
     return Nil()
 
 

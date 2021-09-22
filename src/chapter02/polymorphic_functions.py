@@ -11,7 +11,7 @@ C = TypeVar('C')
 # a function for testing whether an `A` is greater than another `A`.
 def binary_search(xs: list[A], key: A, gt: Callable[[A, A], bool]) -> int:
     def go(low: int, mid: int, high: int) -> TailCall[int]:
-        if (low > high):
+        if low > high:
             return Return(-mid - 1)
         else:
             mid2 = (low + high) // 2

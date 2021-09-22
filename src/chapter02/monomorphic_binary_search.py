@@ -11,7 +11,7 @@ from TailCall import TailCall, Return, Suspend
 # so long as we have some way of comparing elements of the `list`
 def binary_search(ds: list[float], key: float) -> int:
     def go(low: int, mid: int, high: int) -> TailCall[int]:
-        if (low > high):
+        if low > high:
             return Return(-mid - 1)
         else:
             mid2 = (low + high) // 2
