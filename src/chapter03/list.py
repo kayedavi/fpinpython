@@ -48,15 +48,15 @@ def product(ds: List[float]) -> float:
             return x * product(xs)
 
 
-def apply(*xs: A) -> List[A]:  # Variadic function syntax
+def listOf(*xs: A) -> List[A]:  # Variadic function syntax
     if len(xs) == 0:
         return Nil()
     else:
-        return Cons(xs[0], apply(*xs[1:]))
+        return Cons(xs[0], listOf(*xs[1:]))
 
 
 def x() -> int:
-    match apply(1, 2, 3, 4, 5):
+    match listOf(1, 2, 3, 4, 5):
         case Cons(x, Cons(2, Cons(4, _))):
             return x
         case Nil():
@@ -124,7 +124,6 @@ def setHead(l: List[A], h: A) -> List[A]:
 # is not indicative of a programming error. If you pay attention to how you use `drop`, it's often in cases where the
 # length of the input list is unknown, and the number of elements to be dropped is being computed from something else.
 # If `drop` threw an exception, we'd have to first compute or check the length and only drop up to that many elements.
-# TODO: Use TailCall
 def drop(l: List[A], n: int) -> List[A]:
     if n <= 0:
         return l
@@ -173,7 +172,7 @@ def init2(l: List[A]) -> List[A]:
             case Nil():
                 raise RuntimeError('init of empty list')
             case Cons(_, Nil()):
-                Return(apply(*buf))
+                return Return(listOf(*buf))
             case Cons(h, t):
                 buf.append(h)
                 return Suspend(lambda: go(t))
@@ -207,7 +206,7 @@ def foldLeft(l: List[A], z: B, f: Callable[[B, A], B]) -> B:
             case Nil():
                 return Return(z)
             case Cons(h, t):
-                return Suspend(lambda: foldLeft(t, f(z, h), f))
+                return Suspend(lambda: go(t, f(z, h), f))
 
     return go(l, z, f).eval()
 
@@ -225,7 +224,7 @@ def length2(l: List[A]) -> int:
 
 
 def reverse(l: List[A]) -> List[A]:
-    return foldLeft(l, apply(), (lambda acc, h: Cons(h, acc)))
+    return foldLeft(l, listOf(), (lambda acc, h: Cons(h, acc)))
 
 
 # The implementation of `foldRight` in terms of `reverse` and `foldLeft` is a common trick for avoiding stack overflows
@@ -242,11 +241,11 @@ def foldRightViaFoldLeft(l: List[A], z: B, f: Callable[[A, B], B]) -> B:
 
 
 def foldRightViaFoldLeft_1(l: List[A], z: B, f: Callable[[A, B], B]) -> B:
-    return foldLeft(l, (lambda b: b)(lambda g, a: lambda b: g(f(a, b))), z)
+    return foldLeft(l, lambda b: b, (lambda g, a: lambda c: g(f(a, c))))(z)
 
 
 def foldLeftViaFoldRight(l: List[A], z: B, f: Callable[[B, A], B]) -> B:
-    return foldRight(l, (lambda b: b)(lambda a, g: lambda b: g(f(b, a))), z)
+    return foldRight(l, lambda b: b, (lambda a, g: lambda b: g(f(b, a))))(z)
 
 
 # `append` simply replaces the `Nil` constructor of the first list with the second list, which is exactly the operation
@@ -266,15 +265,15 @@ def appendViaFoldRight(l: List[A], r: List[A]) -> List[A]:
 # In other cases, you'll be forced to write `append _` (to convert a `def` to a function value)
 # or even `(x: List[A], y: List[A]) => append(x,y)` if the function is polymorphic and the type arguments aren't known.
 def concat(l: List[List[A]]) -> List[A]:
-    return foldRight(l, apply(), append)
+    return foldRight(l, listOf(), append)
 
 
 def add1(l: List[int]) -> List[int]:
-    return foldRight(l, apply(), (lambda h, t: Cons(h + 1, t)))
+    return foldRight(l, listOf(), (lambda h, t: Cons(h + 1, t)))
 
 
 def doubleToString(l: List[float]) -> List[str]:
-    return foldRight(l, apply(), (lambda h, t: Cons(str(h), t)))
+    return foldRight(l, listOf(), (lambda h, t: Cons(str(h), t)))
 
 
 # A natural solution is using `foldRight`, but our implementation of `foldRight` is not stack-safe. We can
@@ -282,11 +281,11 @@ def doubleToString(l: List[float]) -> List[str]:
 # implementation of `List`, `map` will just be implemented using local mutation (variation 2). Again, note that the
 # mutation isn't observable outside the function, since we're only mutating a buffer that we've allocated.
 def map(l: List[A], f: Callable[[A], B]) -> List[B]:
-    return foldRight(l, apply(), (lambda h, t: Cons(f(h), t)))
+    return foldRight(l, listOf(), (lambda h, t: Cons(f(h), t)))
 
 
 def map_1(l: List[A], f: Callable[[A], B]) -> List[B]:
-    return foldRightViaFoldLeft(l, apply(), (lambda h, t: Cons(f(h), t)))
+    return foldRightViaFoldLeft(l, listOf(), (lambda h, t: Cons(f(h), t)))
 
 
 def map_2(l: List[A], f: Callable[[A], B]) -> List[B]:
@@ -301,16 +300,16 @@ def map_2(l: List[A], f: Callable[[A], B]) -> List[B]:
                 return Suspend(lambda: go(t))
 
     go(l).eval()
-    return apply(*buf)  # converting from the standard Scala list to the list we've defined here
+    return listOf(*buf)  # converting from the standard Scala list to the list we've defined here
 
 
 # The discussion about `map` also applies here.
 def filter(l: List[A], f: Callable[[A], bool]) -> List[A]:
-    return foldRight(l, apply(), (lambda h, t: Cons(h, t) if f(h) else t))
+    return foldRight(l, listOf(), (lambda h, t: Cons(h, t) if f(h) else t))
 
 
 def filter_1(l: List[A], f: Callable[[A], bool]) -> List[A]:
-    return foldRightViaFoldLeft(l, apply(), (lambda h, t: Cons(h, t) if f(h) else t))
+    return foldRightViaFoldLeft(l, listOf(), (lambda h, t: Cons(h, t) if f(h) else t))
 
 
 def filter_2(l: List[A], f: Callable[[A], bool]) -> List[A]:
@@ -325,7 +324,7 @@ def filter_2(l: List[A], f: Callable[[A], bool]) -> List[A]:
                 return Suspend(lambda: go(t))
 
     go(l).eval()
-    return apply(*buf)  # converting from the standard Scala list to the list we've defined here
+    return listOf(*buf)  # converting from the standard Scala list to the list we've defined here
 
 
 # This could also be implemented directly using `foldRight`.
@@ -334,7 +333,7 @@ def flatMap(l: List[A], f: Callable[[A], List[B]]) -> List[B]:
 
 
 def filterViaFlatMap(l: List[A], f: Callable[[A], List[B]]) -> List[B]:
-    return flatMap(l, lambda a: apply(a) if f(a) else Nil())
+    return flatMap(l, lambda a: listOf(a) if f(a) else Nil())
 
 
 # To match on multiple values, we can put the values into a pair and match on the pair, as shown next, and the same
@@ -389,7 +388,7 @@ def startsWith(l: List[A], prefix: List[A]) -> bool:
             case (_, Nil()):
                 return Return(True)
             case (Cons(h, t), Cons(h2, t2)) if h == h2:
-                return Suspend(lambda: startsWith(t, t2))
+                return Suspend(lambda: go(t, t2))
             case _:
                 return Return(False)
 
@@ -400,10 +399,10 @@ def hasSubsequence(sup: List[A], sub: List[A]) -> bool:
     def go(sup: List[A], sub: List[A]) -> TailCall[bool]:
         match sup:
             case Nil():
-                return Return(sup == Nil())
+                return Return(sub == Nil())
             case _ if startsWith(sup, sub):
                 return Return(True)
-            case Cons(h, t):
-                return Suspend(lambda: hasSubsequence(t, sub))
+            case Cons(_, t):
+                return Suspend(lambda: go(t, sub))
 
     return go(sup, sub).eval()

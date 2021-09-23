@@ -50,7 +50,7 @@ class Stream(Generic[A]):
     def fold_right(self, z: Callable[[], B], f: Callable[[A, Callable[[], B]], B]) -> B:
         match self:
             case Cons(h, t):
-                return f(h(), lambda: t().foldRight(z, f))
+                return f(h(), lambda: t().fold_right(z, f))
             case _:
                 return z()
 
