@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import TypeVar, Generic, Callable
 
-from TailCall import TailCall, Return, Suspend
+from common.tail_call import TailCall, Return, Suspend
 
 A = TypeVar('A')
 B = TypeVar('B')

@@ -1,6 +1,6 @@
 from typing import Callable
 
-from TailCall import TailCall, Return, Suspend
+from common.tail_call import TailCall, Return, Suspend
 
 # A comment!
 # Another comment

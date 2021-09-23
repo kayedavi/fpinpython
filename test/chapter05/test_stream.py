@@ -1,7 +1,7 @@
 from unittest import TestCase
 
-from chapter03.List import list_of
 from chapter05.stream import stream
+from common.list import list_of
 
 
 class TestStream(TestCase):

@@ -1,7 +1,7 @@
 # First, a findFirst, specialized to `String`.
 # Ideally, we could generalize this to work for any `list` type.
 
-from TailCall import TailCall, Return, Suspend
+from common.tail_call import TailCall, Return, Suspend
 
 
 # First, a binary search implementation, specialized to `float`,

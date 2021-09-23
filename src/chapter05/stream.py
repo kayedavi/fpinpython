@@ -3,9 +3,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import TypeVar, Generic, Callable
 
-import chapter03
-from TailCall import TailCall, Return, Suspend
-from chapter03.List import List, empty_list
+from common.tail_call import TailCall, Return, Suspend
+from common.list import Cons as ListCons, List, empty_list
 from chapter04.option import Option, Nonentity, Some
 
 A = TypeVar('A', covariant=True)
@@ -19,7 +18,7 @@ class Stream(Generic[A]):
         def go(s: Stream[A], acc: List[A]) -> TailCall[List[A]]:
             match s:
                 case Cons(h, t):
-                    return Suspend(lambda: go(t(), chapter03.List.Cons(h(), acc)))
+                    return Suspend(lambda: go(t(), ListCons(h(), acc)))
                 case _:
                     return Return(acc)
 

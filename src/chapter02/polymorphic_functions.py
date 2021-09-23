@@ -1,6 +1,6 @@
 from typing import TypeVar, Callable
 
-from TailCall import TailCall, Return, Suspend
+from common.tail_call import TailCall, Return, Suspend
 
 A = TypeVar('A')
 B = TypeVar('B')

@@ -1,4 +1,4 @@
-from TailCall import Return, Suspend, TailCall
+from common.tail_call import Return, Suspend, TailCall
 
 
 def factorial(n: int) -> int:

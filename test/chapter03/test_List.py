@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from chapter03.List import list_of, List, empty_list
+from common.list import list_of, List, empty_list
 
 
 class TestList(TestCase):

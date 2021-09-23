@@ -1,7 +1,7 @@
 from unittest import TestCase
 
-from chapter03.List import list_of
 from chapter04.option import Some, Nonentity, map2, sequence, traverse
+from common.list import list_of
 
 
 class TestOption(TestCase):

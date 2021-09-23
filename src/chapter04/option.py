@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import TypeVar, Generic, Callable
 
-from chapter03.List import List, Nil, Cons
+from common.list import List, Nil, Cons
 
 A = TypeVar('A', covariant=True)
 B = TypeVar('B')
