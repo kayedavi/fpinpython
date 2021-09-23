@@ -98,7 +98,7 @@ def test_get_or_else() -> None:
 
 
 def test_fold() -> None:
-    assert KList(1, 2, 3, 4).fold("", (lambda b, a: f'{a}{b}')) == '4321'
+    assert KList(1, 2, 3, 4).fold('', (lambda b, a: f'{a}{b}')) == '4321'
 
 
 def test_fold_right() -> None:
@@ -164,7 +164,7 @@ def test_as_sequence() -> None:
 def test_associate() -> None:
     expected = {'1': 'David has 1 dollars', '2': 'David has 2 dollars', '3': 'David has 3 dollars',
                 '4': 'David has 4 dollars', '5': 'David has 5 dollars'}
-    actual = KList(1, 2, 3, 4, 5).associate(lambda it: (str(it), f"David has {it} dollars"))
+    actual = KList(1, 2, 3, 4, 5).associate(lambda it: (str(it), f'David has {it} dollars'))
     assert actual == expected
 
 

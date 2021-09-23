@@ -39,4 +39,4 @@ class TestStream(TestCase):
         self.assertEqual(list_of(1, 2, 3, 4), stream(1, 2).append(lambda: stream(3, 4)).to_list())
 
     def test_flatMap(self) -> None:
-        self.assertEqual(list_of(1, 2, 3), stream("1", "2", "3").flat_map(lambda it: stream(int(it))).to_list())
+        self.assertEqual(list_of(1, 2, 3), stream('1', '2', '3').flat_map(lambda it: stream(int(it))).to_list())

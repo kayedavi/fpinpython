@@ -44,4 +44,4 @@ def test_uncurry() -> None:
 
 def test_compose() -> None:
     c = compose(str, int)
-    assert c(7.2) == "7"
+    assert c(7.2) == '7'

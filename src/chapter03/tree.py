@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from dataclasses import dataclass
 from typing import TypeVar, Generic, Callable
 
@@ -8,12 +6,12 @@ B = TypeVar('B')
 C = TypeVar('C')
 
 
-class Tree(Generic[A]):  # `List` data type, parameterized on a type, `A`
+class Tree(Generic[A]):
     pass
 
 
 @dataclass(frozen=True)
-class Leaf(Tree[A]):  # A `List` data constructor representing the empty list
+class Leaf(Tree[A]):
     value: A
 
 

@@ -101,15 +101,15 @@ def test_add1() -> None:
 
 
 def test_map() -> None:
-    assert map(listOf("1", "2", "3"), int) == listOf(1, 2, 3)
+    assert map(listOf('1', '2', '3'), int) == listOf(1, 2, 3)
 
 
 def test_map_1() -> None:
-    assert map_1(listOf("1", "2", "3"), int) == listOf(1, 2, 3)
+    assert map_1(listOf('1', '2', '3'), int) == listOf(1, 2, 3)
 
 
 def test_map_2() -> None:
-    assert map_2(listOf("1", "2", "3"), int) == listOf(1, 2, 3)
+    assert map_2(listOf('1', '2', '3'), int) == listOf(1, 2, 3)
 
 
 def test_filter() -> None:
@@ -125,7 +125,7 @@ def test_filter_2() -> None:
 
 
 def test_flat_map() -> None:
-    assert flatMap(listOf(1, 2, 3), lambda x: listOf(str(x), str(x + 1))) == listOf("1", "2", "2", "3", "3", "4")
+    assert flatMap(listOf(1, 2, 3), lambda x: listOf(str(x), str(x + 1))) == listOf('1', '2', '2', '3', '3', '4')
 
 
 def test_filter_via_flat_map() -> None:

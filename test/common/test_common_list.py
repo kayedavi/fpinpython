@@ -39,7 +39,7 @@ class TestList(TestCase):
         self.assertEqual(list_of(1, 2, 3), list_of(1, 2, 3, 4).init())
 
     def test_fold_left(self) -> None:
-        self.assertEqual("4321", list_of(1, 2, 3, 4).fold("", (lambda b, a: f'{a}{b}')))
+        self.assertEqual('4321', list_of(1, 2, 3, 4).fold('', (lambda b, a: f'{a}{b}')))
 
     def test_length(self) -> None:
         self.assertEqual(4, list_of(1, 2, 3, 4).length())
@@ -63,7 +63,7 @@ class TestList(TestCase):
         self.assertEqual(list_of(5, 7, 9), list_of(1, 2, 3).zip_with(list_of(4, 5, 6), (lambda a, b: a + b)))
 
     def test_to_string(self) -> None:
-        self.assertEqual("[1, 2, 3, 4]", str(list_of(1, 2, 3, 4)))
+        self.assertEqual('[1, 2, 3, 4]', str(list_of(1, 2, 3, 4)))
 
     def test_toPython(self) -> None:
         actual = list_of(1, 2, 3, 4).to_python()

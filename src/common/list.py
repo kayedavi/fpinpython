@@ -22,21 +22,21 @@ class List(Generic[A]):
     def tail(self) -> List[A]:
         match self:
             case Nil():
-                raise Exception("tail of empty list")
+                raise Exception('tail of empty list')
             case Cons(_, xs):
                 return xs
 
     def head(self) -> A:
         match self:
             case Nil():
-                raise Exception("head of empty list")
+                raise Exception('head of empty list')
             case Cons(x, _):
                 return x
 
     def set_head(self, h: A) -> List[A]:
         match self:
             case Nil():
-                raise Exception("set_head on empty list")
+                raise Exception('set_head on empty list')
             case Cons(_, t):
                 return Cons(h, t)
 
@@ -156,7 +156,7 @@ class List(Generic[A]):
             return '[]'
         else:
             first = f'[{self.head()}'
-            remaining = self.tail().fold('', (lambda b, a: f"{b}, {str(a)}"))
+            remaining = self.tail().fold('', (lambda b, a: f'{b}, {str(a)}'))
 
             return first + remaining + ']'
 
