@@ -75,12 +75,12 @@ def append(a1: List[A], a2: List[A]) -> List[A]:
             return Cons(h, append(t, a2))
 
 
-def foldRight(aa: List[A], z: B, f: Callable[[A, B], B]) -> B:  # Utility functions
-    match aa:
+def foldRight(xs: List[A], z: B, f: Callable[[A, B], B]) -> B:  # Utility functions
+    match xs:
         case Nil():
             return z
-        case Cons(x, xs):
-            return f(x, foldRight(xs, z, f))
+        case Cons(h, t):
+            return f(h, foldRight(t, z, f))
 
 
 def sum2(ns: List[int]) -> int:
