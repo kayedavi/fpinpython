@@ -1,7 +1,7 @@
 from chapter02.factorial import factorial
 
 
-def test_factorial(self) -> None:
+def test_factorial() -> None:
     assert 1 == factorial(1)
     assert 2 == factorial(2)
     assert 6 == factorial(3)
