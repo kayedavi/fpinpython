@@ -3,7 +3,6 @@ from __future__ import annotations
 from dataclasses import dataclass
 from functools import reduce
 from itertools import groupby
-from typing import List
 
 
 @dataclass(frozen=True)
