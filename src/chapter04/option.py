@@ -107,6 +107,8 @@ def variance(xs: List[float]) -> Option[float]:
     return mean(xs).flatMap(lambda m: mean(xs.map(lambda x: math.pow(x - m, 2))))
 
 
+# a bit later in the chapter we'll learn nicer syntax for
+# writing functions like this
 def map2(a: Option[A], b: Option[B], f: Callable[[A, B], C]) -> Option[C]:
     return a.flatMap(lambda aa: b.map(lambda bb: f(aa, bb)))
 
