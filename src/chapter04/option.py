@@ -127,7 +127,7 @@ def sequence(a: List[Option[A]]) -> Option[List[A]]:
 # unfortunate consequence of Scala using subtyping to encode algebraic data types.
 # a.foldRight[Option[List[A]]](Some(Nil))((x,y) => map2(x,y)(_ :: _))
 def sequence_1(a: List[Option[A]]) -> Option[List[A]]:
-    return a.fold_right(some(empty_list()), (lambda x, y: map2(x, y, (lambda hh, tt: Cons(hh, tt)))))
+    return a.fold_right(some(empty_list()), (lambda x, y: map2(x, y, Cons)))
 
 
 def traverse(a: List[A], f: Callable[[A], Option[B]]) -> Option[List[B]]:
