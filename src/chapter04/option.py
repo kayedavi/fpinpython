@@ -83,7 +83,7 @@ def failingFn(i: int) -> int:
     # A `catch` block is just a pattern matching block like the ones we've seen. `case e: Exception` is a pattern
     # that matches any `Exception`, and it binds this value to the identifier `e`. The match returns the value 43.
     except Exception as e:
-        return 42
+        return 43
 
 
 def failingFn2(i: int) -> int:
