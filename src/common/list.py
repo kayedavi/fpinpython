@@ -13,7 +13,7 @@ Nothing = TypeVar('Nothing')
 
 class List(Generic[A]):
     def __bool__(self) -> bool:
-        return self.length() > 0
+        return isinstance(self, Cons)
 
     def append(self, r: List[A]) -> List[A]:
         return self.fold_right(r, (lambda h, t: Cons(h, t)))
@@ -71,7 +71,7 @@ class List(Generic[A]):
             case Cons(h, t):
                 return Cons(h, t.init())
 
-    def length(self) -> int:
+    def __len__(self) -> int:
         return self.fold(0, (lambda acc, h: acc + 1))
 
     def fold(self, z: B, f: Callable[[B, A], B]) -> B:

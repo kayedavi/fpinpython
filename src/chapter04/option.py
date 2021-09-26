@@ -100,7 +100,7 @@ def throw(exception: Exception) -> Any:
 
 
 def mean(xs: List[float]) -> Option[float]:
-    return Some(xs.sum() / xs.length()) if xs else Nothing()
+    return Some(xs.sum() / len(xs)) if xs else Nothing()
 
 
 def variance(xs: List[float]) -> Option[float]:

@@ -5,7 +5,7 @@ from common.list import list_of, List, empty_list
 
 class TestList(TestCase):
     def test_emptyList(self) -> None:
-        assert 0 == empty_list().length()
+        assert 0 == len(empty_list())
 
     def test_append(self) -> None:
         x = list_of(1, 2, 3)
@@ -42,7 +42,7 @@ class TestList(TestCase):
         self.assertEqual('4321', list_of(1, 2, 3, 4).fold('', (lambda b, a: f'{a}{b}')))
 
     def test_length(self) -> None:
-        self.assertEqual(4, list_of(1, 2, 3, 4).length())
+        self.assertEqual(4, len(list_of(1, 2, 3, 4)))
 
     def test_reverse(self) -> None:
         self.assertEqual(list_of(4, 3, 2, 1), list_of(1, 2, 3, 4).reverse())
