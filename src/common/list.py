@@ -12,6 +12,8 @@ Nothing = TypeVar('Nothing')
 
 
 class List(Generic[A]):
+    def __bool__(self) -> bool:
+        return self.length() > 0
 
     def append(self, r: List[A]) -> List[A]:
         return self.fold_right(r, (lambda h, t: Cons(h, t)))

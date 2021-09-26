@@ -1,5 +1,5 @@
-from chapter04.option import Some, Nothing, map2, sequenceViaTraverse, traverse, traverse_1
-from common.list import list_of
+from chapter04.option import Some, Nothing, map2, sequenceViaTraverse, traverse, traverse_1, mean
+from common.list import list_of, empty_list
 
 
 def test_Some() -> None:
@@ -43,6 +43,11 @@ def test_filter() -> None:
 def test_filter_1() -> None:
     assert Some(5).filter_1(lambda it: it % 2 == 1) == Some(5)
     assert Some(4).filter_1(lambda it: it % 2 == 1) == Nothing()
+
+
+def test_mean() -> None:
+    assert mean(list_of(1, 2, 3)) == Some(2.0)
+    assert mean(empty_list()) == Nothing()
 
 
 def test_map2() -> None:
