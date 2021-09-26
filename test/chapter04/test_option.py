@@ -1,4 +1,4 @@
-from chapter04.option import Some, Nothing, map2, sequenceViaTraverse, traverse
+from chapter04.option import Some, Nothing, map2, sequenceViaTraverse, traverse, traverse_1
 from common.list import list_of
 
 
@@ -29,6 +29,7 @@ def test_orElse() -> None:
     assert Some(5).orElse(lambda: Some(4)) == Some(5)
     assert Nothing().orElse(lambda: Some(4)) == Some(4)
 
+
 def test_orElse_1() -> None:
     assert Some(5).orElse_1(lambda: Some(4)) == Some(5)
     assert Nothing().orElse_1(lambda: Some(4)) == Some(4)
@@ -37,6 +38,7 @@ def test_orElse_1() -> None:
 def test_filter() -> None:
     assert Some(5).filter(lambda it: it % 2 == 1) == Some(5)
     assert Some(4).filter(lambda it: it % 2 == 1) == Nothing()
+
 
 def test_filter_1() -> None:
     assert Some(5).filter_1(lambda it: it % 2 == 1) == Some(5)
@@ -54,4 +56,9 @@ def test_sequenceViaTraverse() -> None:
 
 def test_traverse() -> None:
     xs = traverse(list_of(1, 2, 3, 4), lambda it: Some(it / 2.0))
+    assert xs == Some(list_of(0.5, 1.0, 1.5, 2.0))
+
+
+def test_traverse_1() -> None:
+    xs = traverse_1(list_of(1, 2, 3, 4), lambda it: Some(it / 2.0))
     assert xs == Some(list_of(0.5, 1.0, 1.5, 2.0))

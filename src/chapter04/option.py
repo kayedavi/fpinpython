@@ -4,7 +4,7 @@ import math
 from dataclasses import dataclass
 from typing import TypeVar, Generic, Callable, Any
 
-from common.list import List, Nil, Cons
+from common.list import List, Nil, Cons, empty_list
 
 A = TypeVar('A', covariant=True)
 B = TypeVar('B')
@@ -70,28 +70,8 @@ class Some(Option[A]):
     get: A
 
 
-def map2(a: Option[A], b: Option[B], f: Callable[[A, B], C]) -> Option[C]:
-    return a.flatMap(lambda aa: b.map(lambda bb: f(aa, bb)))
-
-
-# Here's an explicit recursive version:
-def sequence(a: List[Option[A]]) -> Option[List[A]]:
-    match a:
-        case Nil():
-            return Some(Nil())
-        case Cons(h, t):
-            return h.flatMap(lambda hh: sequence(t).map(lambda tt: Cons(hh, tt)))
-
-
-# It can also be implemented using `foldRight` and `map2`. The type annotation on `foldRight` is needed here; otherwise
-# Scala wrongly infers the result type of the fold as `Some[Nil.type]` and reports a type error (try it!). This is an
-# unfortunate consequence of Scala using subtyping to encode algebraic data types.
-def sequence_1(a: List[Option[A]]) -> Option[List[A]]:
-    return a.fold_right(Some(Nil()), (lambda x, y: map2()))
-
-
-def traverse(a: List[A], f: Callable[[A], Option[B]]) -> Option[List[B]]:
-    return a.fold_right(Some(Nil()), (lambda h, t: map2(f(h), t, Cons)))  # type: ignore
+def some(a: A) -> Option[A]:
+    return Some(a)
 
 
 def failingFn(i: int) -> int:
@@ -125,3 +105,36 @@ def mean(xs: List[float]) -> Option[float]:
 
 def variance(xs: List[float]) -> Option[float]:
     return mean(xs).flatMap(lambda m: mean(xs.map(lambda x: math.pow(x - m, 2))))
+
+
+def map2(a: Option[A], b: Option[B], f: Callable[[A, B], C]) -> Option[C]:
+    return a.flatMap(lambda aa: b.map(lambda bb: f(aa, bb)))
+
+
+# Here's an explicit recursive version:
+def sequence(a: List[Option[A]]) -> Option[List[A]]:
+    match a:
+        case Nil():
+            return Some(Nil())
+        case Cons(h, t):
+            return h.flatMap(lambda hh: sequence(t).map(lambda tt: Cons(hh, tt)))
+
+
+# It can also be implemented using `foldRight` and `map2`. The type annotation on `foldRight` is needed here; otherwise
+# Scala wrongly infers the result type of the fold as `Some[Nil.type]` and reports a type error (try it!). This is an
+# unfortunate consequence of Scala using subtyping to encode algebraic data types.
+# a.foldRight[Option[List[A]]](Some(Nil))((x,y) => map2(x,y)(_ :: _))
+def sequence_1(a: List[Option[A]]) -> Option[List[A]]:
+    return a.fold_right(some(empty_list()), (lambda x, y: map2(x, y, (lambda hh, tt: Cons(hh, tt)))))
+
+
+def traverse(a: List[A], f: Callable[[A], Option[B]]) -> Option[List[B]]:
+    return a.fold_right(Some(Nil()), (lambda h, t: map2(f(h), t, Cons)))  # type: ignore
+
+
+def traverse_1(a: List[A], f: Callable[[A], Option[B]]) -> Option[List[B]]:
+    return a.fold_right(some(empty_list()), (lambda h, t: map2(f(h), t, Cons)))
+
+
+def sequenceViaTraverse(a: List[Option[A]]) -> Option[List[A]]:
+    return traverse(a, lambda a: a)
