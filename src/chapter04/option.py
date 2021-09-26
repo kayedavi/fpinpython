@@ -83,17 +83,11 @@ def sequence(a: List[Option[A]]) -> Option[List[A]]:
             return h.flatMap(lambda hh: sequence(t).map(lambda tt: Cons(hh, tt)))
 
 
-#   It can also be implemented using `foldRight` and `map2`. The type annotation on `foldRight` is needed here; otherwise
-#   Scala wrongly infers the result type of the fold as `Some[Nil.type]` and reports a type error (try it!). This is an
-#   unfortunate consequence of Scala using subtyping to encode algebraic data types.
-#   */
-#   def sequence_1[A](a: List[Option[A]]): Option[List[A]] =
-#     a.foldRight[Option[List[A]]](Some(Nil))((x,y) => map2(x,y)(_ :: _))
+# It can also be implemented using `foldRight` and `map2`. The type annotation on `foldRight` is needed here; otherwise
+# Scala wrongly infers the result type of the fold as `Some[Nil.type]` and reports a type error (try it!). This is an
+# unfortunate consequence of Scala using subtyping to encode algebraic data types.
 def sequence_1(a: List[Option[A]]) -> Option[List[A]]:
-    return a.fold_right(Some(Nil()), (lambda x,y: map2()))
-
-def sequenceViaTraverse(a: List[Option[A]]) -> Option[List[A]]:
-    return traverse(a, lambda x: x)
+    return a.fold_right(Some(Nil()), (lambda x, y: map2()))
 
 
 def traverse(a: List[A], f: Callable[[A], Option[B]]) -> Option[List[B]]:
