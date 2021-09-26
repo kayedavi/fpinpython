@@ -167,6 +167,15 @@ class List(Generic[A]):
 
         return self.fold(list(), go)
 
+    def sum(self) -> float | int:
+        match self:
+            case Nil():
+                return 0
+            case Cons(h, t) if isinstance(h, int) or isinstance(h, float):
+                return self.fold(0, (lambda b, a: b + a))
+            case _:
+                raise RuntimeError('Sum is not supported for non-numeric values')
+
 
 def list_of(*elements: A) -> List[A]:
     if len(elements) == 0:

@@ -3,9 +3,9 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import TypeVar, Generic, Callable
 
-from common.tail_call import TailCall, Return, Suspend
+from chapter04.option import Option, Nothing, Some
 from common.list import Cons as ListCons, List, empty_list
-from chapter04.option import Option, Nonentity, Some
+from common.tail_call import TailCall, Return, Suspend
 
 A = TypeVar('A', covariant=True)
 B = TypeVar('B')
@@ -56,14 +56,14 @@ class Stream(Generic[A]):
 
     def map(self, f: Callable[[A], B]) -> Stream[B]:
         return self.fold_right(
-            lambda: Empty(),
-            (lambda h, t: Cons(lambda: f(h), t))  # type: ignore
+            lambda: empty(),
+            (lambda h, t: Cons(lambda: f(h), t))
         )
 
     def head_option(self) -> Option[A]:
         match self:
             case Empty():
-                return Nonentity()
+                return Nothing()
             case Cons(h, _):
                 return Some(h())
 
@@ -101,7 +101,8 @@ class Cons(Stream[A]):
 
 
 def stream(*elements: A) -> Stream[A]:
-    if len(elements) == 0:
-        return Empty()
-    else:
-        return Cons(lambda: elements[0], lambda: stream(*elements[1:]))
+    return Cons(lambda: elements[0], lambda: stream(*elements[1:])) if elements else empty()
+
+
+def empty() -> Stream[A]:
+    return Empty()

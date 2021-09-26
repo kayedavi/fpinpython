@@ -8,7 +8,6 @@ B = TypeVar('B')
 C = TypeVar('C')
 Nothing = TypeVar('Nothing')
 
-
 class List(Generic[A]):  # `List` data type, parameterized on a type, `A`
     pass
 

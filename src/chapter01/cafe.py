@@ -39,7 +39,7 @@ def buy_coffee(cc: CreditCard) -> (Coffee, Charge):
     return cup, Charge(cc, cup.price)
 
 
-def buy_coffees(cc: CreditCard, n: int) -> ([Coffee], Charge):
+def buy_coffees(cc: CreditCard, n: int) -> (list[Coffee], Charge):
     purchases = [buy_coffee(cc)] * n
     coffees, charges = zip(*purchases)
     return list(coffees), reduce((lambda c1, c2: c1.combine(c2)), charges)

@@ -6,6 +6,7 @@ def test_buy_coffees() -> None:
     assert coffees == [Coffee(price=5.0), Coffee(price=5.0)]
     assert charge == Charge(CreditCard(), 10.0)
 
+
 def test_coalesce() -> None:
     charges = [Charge(CreditCard(), 5.0), Charge(CreditCard(), 2.0)]
     assert coalesce(charges) == [Charge(CreditCard(), 7.0)]
